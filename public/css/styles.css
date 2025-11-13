@@ -328,3 +328,69 @@ body.landing .auth-buttons {
     text-align: center;
   }
 }
+
+/* Wrapper para centrar verticalmente el formulario */
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: calc(100vh - 60px);
+  /* si tienes header de 60px */
+}
+
+/* Contenedor del formulario */
+.form-container {
+  max-width: 400px;
+  width: 100%;
+  background-color: rgba(26, 26, 46, 0.95);
+  /* semitransparente */
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Encabezado del formulario con icono */
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 0.5rem;
+}
+
+/* Inputs con efecto focus */
+.form__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(255, 233, 108, 0.6);
+  transition: all 0.3s ease;
+}
+
+/* Botones centrados y con gap */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions .btn {
+    width: 100%;
+  }
+}
