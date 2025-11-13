@@ -21,8 +21,13 @@
 body {
   font-family: var(--font-family);
   color: var(--text);
-  background: url('../img/qwestly-banner.jpg') no-repeat center center;
-  background-size: cover;
+  background: url('../img/qwestly-banner_noise2_scale.png') no-repeat center center;
+  background-size: 100% auto;
+  /* evita que se escale de manera distorsionada */
+  background-attachment: fixed;
+  /* efecto parallax y mejora nitidez */
+  image-rendering: auto;
+  /* otras opciones: crisp-edges o pixelated para pixel art */
   min-height: 100vh;
   margin: 0;
   display: flex;
@@ -341,11 +346,11 @@ body.landing .auth-buttons {
 
 /* Contenedor del formulario */
 .form-container {
-  max-width: 400px;
+  max-width: 450px;
   width: 100%;
   background-color: rgba(26, 26, 46, 0.95);
   /* semitransparente */
-  padding: 2rem;
+  padding: 2rem 2.5rem;
   border-radius: var(--radius);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
@@ -393,4 +398,28 @@ body.landing .auth-buttons {
   .actions .btn {
     width: 100%;
   }
+}
+
+/* Asterisco rojo para inputs requeridos */
+.form__label {
+  position: relative;
+}
+
+.form__input:required+.form__label::after,
+.form__label::after {
+  content: "*";
+  color: #ff4c4c;
+  /* rojo */
+  margin-left: 0.25rem;
+}
+
+/* Mejor manera usando atributo required */
+.form__group .form__label::after {
+  content: "*";
+  color: #ff4c4c;
+  margin-left: 0.25rem;
+}
+
+.form__group .form__input:required+.form__label::after {
+  content: "*";
 }
