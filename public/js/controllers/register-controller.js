@@ -4,10 +4,20 @@
 import { UserModel } from "../models/user-model.js";
 
 function initRegister() {
+  const backButton = document.getElementById('btn-back');
+
+  if (backButton) {
+    backButton.addEventListener('click', () => {
+      window.history.back();
+      // Redirigir a login.html
+      //window.location.href = '/Qwestly_v1/public/views/login.html';
+    });
+  }
+
   const form = document.getElementById('register-form'); // Debe coincidir con el ID en HTML
   if (!form) return;
 
-  form.addEventListener('submit', function(event) {
+  form.addEventListener('submit', function (event) {
     event.preventDefault();
 
     const name = form.querySelector('#name').value.trim();

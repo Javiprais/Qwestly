@@ -2,16 +2,6 @@
 // Punto de entrada principal de la aplicación
 // Carga dinámicamente el controlador correspondiente según la página
 
-// Detectar si es la primera visita a la web, para redirigir a landing.html
-if (!localStorage.getItem('firstVisit')) {
-    localStorage.setItem('firstVisit', 'true');
-    const current = window.location.pathname;
-    // Evitar bucle si ya estamos en landing
-    if (!current.includes('landing.html')) {
-        window.location.href = '/Qwestly_v1/public/views/landing.html';
-    }
-}
-
 
 // Detecta la página actual
 const currentPath = window.location.pathname;
@@ -35,6 +25,18 @@ async function loadController(controllerPath, initFunctionName) {
 // Inicializaciones globales (opcional)
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Aplicación inicializada');
+
+    // REVISAR
+    // Detectar si es la primera visita a la web, para redirigir a landing.html
+    if (!localStorage.getItem('firstVisit')) {
+        localStorage.setItem('firstVisit', 'true');
+        const current = window.location.pathname;
+        // Evitar bucle si ya estamos en landing
+        if (!current.includes('landing.html')) {
+            window.location.href = '/Qwestly_v1/public/views/landing.html';
+        }
+    }
+
     // Carga el controlador según la página
     if (currentPath.endsWith('landing.html')) {
         loadController('./controllers/landing-controller.js', 'initLanding');
