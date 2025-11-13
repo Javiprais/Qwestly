@@ -1,0 +1,16 @@
+/* alternative.css - tema alternativo oscuro */
+:root {
+  --primary: #38b2ac;
+  --bg: #1a202c;
+  --text: #edf2f7;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.btn {
+  background: var(--primary);
+  color: #fff;
+}
