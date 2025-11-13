@@ -2,6 +2,17 @@
 // Punto de entrada principal de la aplicación
 // Carga dinámicamente el controlador correspondiente según la página
 
+// Detectar si es la primera visita a la web, para redirigir a landing.html
+if (!localStorage.getItem('firstVisit')) {
+    localStorage.setItem('firstVisit', 'true');
+    const current = window.location.pathname;
+    // Evitar bucle si ya estamos en landing
+    if (!current.includes('landing.html')) {
+        window.location.href = '/Qwestly_v1/public/views/landing.html';
+    }
+}
+
+
 // Detecta la página actual
 const currentPath = window.location.pathname;
 
