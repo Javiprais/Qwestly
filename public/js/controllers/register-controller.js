@@ -10,7 +10,7 @@ function initRegister() {
     backButton.addEventListener('click', () => {
       window.history.back();
       // Redirigir a login.html
-      //window.location.href = '/Qwestly_v1/public/views/login.html';
+      //window.location.href = '/Qwestly/public/views/login.html';
     });
   }
 

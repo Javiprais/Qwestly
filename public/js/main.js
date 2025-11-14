@@ -15,10 +15,10 @@ async function loadController(controllerPath, initFunctionName) {
             module[initFunctionName](); // Llama a la función de inicialización
             console.log(`Controlador cargado: ${controllerPath}`);
         } else {
-            console.warn(`Función ${initFunctionName} no encontrada en ${controllerPath}`);
+            console.log(`Función ${initFunctionName} no encontrada en ${controllerPath}`);
         }
     } catch (error) {
-        console.error(`Error al cargar el controlador ${controllerPath}:`, error);
+        console.log(`Error al cargar el controlador ${controllerPath}:`, error);
     }
 }
 
@@ -30,10 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Detectar si es la primera visita a la web, para redirigir a landing.html
     if (!localStorage.getItem('firstVisit')) {
         localStorage.setItem('firstVisit', 'true');
-        const current = window.location.pathname;
         // Evitar bucle si ya estamos en landing
-        if (!current.includes('landing.html')) {
-            window.location.href = '/Qwestly_v1/public/views/landing.html';
+        if (!currentPath.includes('landing.html')) {
+            window.location.href = '../views/landing.html';
         }
     }
 
@@ -47,6 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (currentPath.endsWith('home.html')) {
         loadController('./controllers/home-controller.js', 'initHome');
     } else {
-        console.warn('No hay controlador asignado para esta página:', currentPath);
+        console.log('No hay controlador asignado para esta página:', currentPath);
     }
 });
