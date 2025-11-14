@@ -52,7 +52,7 @@ function initHome() {
 
       // CREAR OBJETO USUARIO Y GUARDARLO
       const newUser = { name, email };
-      UserModel.add(newUser); // Método para añadir usuario al modelo
+      UserModel.addUser(newUser); // Método para añadir usuario al modelo
 
       // ACTUALIZAR LISTA
       renderUsers();
