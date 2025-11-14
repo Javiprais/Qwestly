@@ -14,9 +14,20 @@
   <main class="container">
     <h1 id="welcome"></h1>
     <button id="logoutBtn" class="btn btn--secondary">Cerrar sesión</button>
+
     <section>
       <h2>Usuarios registrados</h2>
       <ul id="userList"></ul>
+    </section>
+
+    <!-- Formulario para registrar nuevos usuarios -->
+    <section>
+      <h2>Registrar nuevo usuario</h2>
+      <form id="userForm">
+        <input type="text" id="nameInput" placeholder="Nombre" required>
+        <input type="email" id="emailInput" placeholder="Correo electrónico" required>
+        <button type="submit" class="btn">Registrar</button>
+      </form>
     </section>
   </main>
 </body>
