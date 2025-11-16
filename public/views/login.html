@@ -9,28 +9,6 @@
   <script type="module" src="../js/main.js"></script>
 </head>
 
-<!--<body>
-  <div class="container">
-    <h1>Inicio de sesión</h1>
-    <form id="login-form" class="form">
-      <div class="form__group">
-        <label class="form__label" for="email">Correo electrónico</label>
-        <input class="form__input" type="email" id="email" required>
-      </div>
-      <div class="form__group">
-        <label class="form__label" for="password">Contraseña</label>
-        <input class="form__input" type="password" id="password" required>
-      </div>
-      <button type="submit" class="btn">Entrar</button>
-      <div id="login-message">
-        <p>¿Todavía no estás registrado?
-          <a href="register.html" class="link">Regístrate aquí</a>
-        </p>
-      </div>
-    </form>
-  </div>
-</body>-->
-
 <body>
   <div class="register-wrapper">
     <div class="container form-container">
@@ -42,7 +20,7 @@
       </div>
 
       <!-- Formulario de login -->
-      <form id="login-form" class="">
+      <form id="login-form" novalidate class="">
         <div class="form__group">
           <label class="form__label" for="email">Correo electrónico</label>
           <input class="form__input" type="email" id="email" required>
@@ -54,7 +32,7 @@
 
         <div class="actions">
           <button type="submit" class="btn">Entrar</button>
-          <button type="button" id="btn-back" class="btn btn--secondary">Volver atrás</button>
+          <!-- <button type="button" id="btn-back" class="btn btn--secondary">Volver atrás</button> -->
         </div>
 
         <div id="login-message" style="text-align:center; margin-top:1rem;">

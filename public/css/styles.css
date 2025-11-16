@@ -23,11 +23,8 @@ body {
   color: var(--text);
   background: url('../img/qwestly-banner_noise2_scale.png') no-repeat center center;
   background-size: 100% auto;
-  /* evita que se escale de manera distorsionada */
   background-attachment: fixed;
-  /* efecto parallax y mejora nitidez */
   image-rendering: auto;
-  /* otras opciones: crisp-edges o pixelated para pixel art */
   min-height: 100vh;
   margin: 0;
   display: flex;
@@ -204,15 +201,12 @@ section li {
   font-size: 1.3rem;
   font-weight: bold;
   gap: 0.5rem;
-  /* espacio entre el icono y el texto */
 }
 
 /* Ajuste del ícono dentro del logo */
 .logo-icon {
   width: 32px;
-  /* ancho fijo proporcional al header */
   height: 32px;
-  /* mantiene proporción */
 }
 
 .logo-icon {
@@ -341,15 +335,13 @@ body.landing .auth-buttons {
   align-items: center;
   flex: 1;
   min-height: calc(100vh - 60px);
-  /* si tienes header de 60px */
 }
 
-/* Contenedor del formulario */
+/* Contenedor del formulario (ligero aumento de ancho y padding) */
 .form-container {
-  max-width: 450px;
+  max-width: 480px;
   width: 100%;
   background-color: rgba(26, 26, 46, 0.95);
-  /* semitransparente */
   padding: 2rem 2.5rem;
   border-radius: var(--radius);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
@@ -367,6 +359,13 @@ body.landing .auth-buttons {
   width: 50px;
   height: 50px;
   margin-bottom: 0.5rem;
+}
+
+.form-header p {
+  color: #ddd;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 0.35rem;
 }
 
 /* Inputs con efecto focus */
@@ -405,11 +404,10 @@ body.landing .auth-buttons {
   position: relative;
 }
 
-.form__input:required+.form__label::after,
+.form__input:required + .form__label::after,
 .form__label::after {
   content: "*";
   color: #ff4c4c;
-  /* rojo */
   margin-left: 0.25rem;
 }
 
@@ -420,6 +418,45 @@ body.landing .auth-buttons {
   margin-left: 0.25rem;
 }
 
-.form__group .form__input:required+.form__label::after {
+.form__group .form__input:required + .form__label::after {
   content: "*";
+}
+
+/* ===== Validación personalizada ===== */
+
+.form__input.error {
+  border-color: #ff4c4c;
+  box-shadow: 0 0 6px rgba(255, 76, 76, 0.5);
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* === Mostrar/ocultar contraseña === */
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper .form__input {
+  padding-right: 2.2rem; /* espacio para icono */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #555;
+  transition: 0.2s ease;
+  user-select: none;
+}
+
+.toggle-password:hover {
+  color: var(--accent);
 }

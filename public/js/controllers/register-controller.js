@@ -1,47 +1,108 @@
 // register-controller.js
-// Controlador de registro de usuario
-
 import { UserModel } from "../models/user-model.js";
 
 function initRegister() {
+
   const backButton = document.getElementById('btn-back');
 
   if (backButton) {
     backButton.addEventListener('click', () => {
       window.history.back();
-      // Redirigir a login.html
-      //window.location.href = '/Qwestly/public/views/login.html';
     });
   }
 
-  const form = document.getElementById('register-form'); // Debe coincidir con el ID en HTML
+  const form = document.getElementById("register-form");
   if (!form) return;
 
-  form.addEventListener('submit', function (event) {
+  const nameInput = form.querySelector("#name");
+  const emailInput = form.querySelector("#email");
+  const passInput = form.querySelector("#password");
+  const togglePass = document.getElementById("toggle-register-pass");
+
+  // Mostrar / ocultar contraseña
+  togglePass.addEventListener("click", () => {
+    const type = passInput.type === "password" ? "text" : "password";
+    passInput.type = type;
+
+    // Cambiar icono
+    togglePass.textContent = type === "password" ? "👁️" : "🙈";
+  });
+
+
+  // Crear funciones de validación visual
+  function showError(input, message) {
+    input.classList.add("error");
+
+    let msg = input.parentElement.querySelector(".error-message");
+    if (!msg) {
+      msg = document.createElement("p");
+      msg.classList.add("error-message");
+      input.parentElement.appendChild(msg);
+    }
+    msg.textContent = message;
+  }
+
+  function clearError(input) {
+    input.classList.remove("error");
+    const msg = input.parentElement.querySelector(".error-message");
+    if (msg) msg.remove();
+  }
+
+  form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const name = form.querySelector('#name').value.trim();
-    const email = form.querySelector('#email').value.trim();
-    const password = form.querySelector('#password').value.trim();
+    // Limpiar errores previos
+    clearError(nameInput);
+    clearError(emailInput);
+    clearError(passInput);
 
-    if (!name || !email || !password) {
-      alert('Todos los campos son obligatorios.');
-      return;
+    let hasErrors = false;
+
+    // Validación nombre
+    if (nameInput.value.trim() === "") {
+      showError(nameInput, "El nombre es obligatorio.");
+      hasErrors = true;
     }
 
-    if (UserModel.findByEmail(email)) {
-      alert('El email ya está registrado.');
-      return;
+    // Validación email
+    const email = emailInput.value.trim();
+    if (email === "") {
+      showError(emailInput, "El correo es obligatorio.");
+      hasErrors = true;
+    } else if (!email.includes("@")) {
+      showError(emailInput, "Introduce un correo válido.");
+      hasErrors = true;
     }
 
-    // Guardar usuario en localStorage
-    UserModel.addUser({ name, email, password });
-    localStorage.setItem('currentUser', JSON.stringify({ name, email }));
+    // Comprobar si ya existe
+    if (!hasErrors && UserModel.findByEmail(email)) {
+      showError(emailInput, "El email ya está registrado.");
+      hasErrors = true;
+    }
 
-    // Redirigir a home
-    window.location.href = './home.html';
+    // Validación contraseña
+    if (passInput.value.trim() === "") {
+      showError(passInput, "La contraseña es obligatoria.");
+      hasErrors = true;
+    }
+
+    if (hasErrors) return;
+
+    // Guardar usuario
+    UserModel.addUser({
+      name: nameInput.value.trim(),
+      email: emailInput.value.trim(),
+      password: passInput.value.trim()
+    });
+
+    localStorage.setItem("currentUser", JSON.stringify({
+      name: nameInput.value.trim(),
+      email: emailInput.value.trim()
+    }));
+
+    // Redirigir
+    window.location.href = "./home.html";
   });
 }
 
-// Exporta la función de inicialización
 export { initRegister };

@@ -16,7 +16,7 @@
         <img src="../ico/gamepad.svg" alt="Gamepad Icon" class="form-icon">
         <h1>Registro de usuario</h1>
       </div>
-      <form id="register-form" class="form">
+      <form id="register-form" novalidate class="form">
         <div class="form__group">
           <label class="form__label" for="name">Nombre</label>
           <input class="form__input" type="text" id="name" required>
@@ -25,9 +25,12 @@
           <label class="form__label" for="email">Correo electrónico</label>
           <input class="form__input" type="email" id="email" required>
         </div>
-        <div class="form__group">
+        <div class="form__group password-group">
           <label class="form__label" for="password">Contraseña</label>
-          <input class="form__input" type="password" id="password" required>
+          <div class="password-wrapper">
+            <input class="form__input" type="password" id="password" required>
+            <span class="toggle-password" id="toggle-register-pass">👁️</span>
+          </div>
         </div>
         <div class="actions">
           <button type="submit" class="btn">Registrarse</button>

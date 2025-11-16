@@ -1,41 +1,70 @@
-// login-controller.js
-// Controlador de login de usuario
-
 import { UserModel } from "../models/user-model.js";
 
 function initLogin() {
 
-  const backButton = document.getElementById('btn-back');
-
-  if (backButton) {
-    backButton.addEventListener('click', () => {
-      window.history.back();
-      // Redirigir a login.html
-      //window.location.href = '/Qwestly/public/views/login.html';
-    });
-  }
-
-  const form = document.getElementById('login-form'); // Debe coincidir con el ID en HTML
+  const form = document.getElementById('login-form');
   if (!form) return;
 
-  form.addEventListener('submit', function (event) {
+  const emailInput = form.querySelector('#email');
+  const passwordInput = form.querySelector('#password');
+
+  // función para mostrar error
+  function showError(input, message) {
+    input.classList.add("error");
+
+    let msg = input.parentElement.querySelector(".error-message");
+    if (!msg) {
+      msg = document.createElement("p");
+      msg.classList.add("error-message");
+      input.parentElement.appendChild(msg);
+    }
+    msg.textContent = message;
+  }
+
+  // función para limpiar error
+  function clearError(input) {
+    input.classList.remove("error");
+    const msg = input.parentElement.querySelector(".error-message");
+    if (msg) msg.remove();
+  }
+
+  form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const email = form.querySelector('#email').value.trim();
-    const password = form.querySelector('#password')?.value.trim(); // Si hay password
+    // limpiar errores previos
+    clearError(emailInput);
+    clearError(passwordInput);
 
-    const user = UserModel.findByEmail(email);
+    let hasErrors = false;
 
+    if (emailInput.value.trim() === "") {
+      showError(emailInput, "El correo es obligatorio.");
+      hasErrors = true;
+    }
+
+    if (!emailInput.value.includes("@")) {
+      showError(emailInput, "Introduce un correo válido.");
+      hasErrors = true;
+    }
+
+    if (passwordInput.value.trim() === "") {
+      showError(passwordInput, "La contraseña es obligatoria.");
+      hasErrors = true;
+    }
+
+    if (hasErrors) return;
+
+    // comprobación de usuario existente
+    const user = UserModel.findByEmail(emailInput.value.trim());
     if (!user) {
-      alert('Usuario no encontrado.');
+      showError(emailInput, "Este usuario no está registrado.");
       return;
     }
 
-    // En este ejemplo básico, no comprobamos password, solo email
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    window.location.href = './home.html';
+    // login ok
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    window.location.href = "./home.html";
   });
 }
 
-// Exporta la función de inicialización
 export { initLogin };
