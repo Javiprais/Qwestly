@@ -1,77 +1,62 @@
 // home-controller.js
-// Controlador de la página home. Muestra usuario actual, lista de usuarios y permite registrar nuevos.
-
-import { UserModel } from "../models/user-model.js"; // Importa el modelo de usuario
+import { UserModel } from "../models/user-model.js";
 
 function initHome() {
   const userData = JSON.parse(localStorage.getItem("currentUser"));
   const welcome = document.getElementById("welcome");
-  const userList = document.getElementById("userList");
   const logoutBtn = document.getElementById("logoutBtn");
-  const userForm = document.getElementById("userForm");
-  const nameInput = document.getElementById("nameInput");
-  const emailInput = document.getElementById("emailInput");
 
-  // Mostrar usuario actual
-  if (userData && welcome) {
-    welcome.textContent = `Bienvenido/a, ${userData.name}`;
-  } else {
+  if (!userData) {
     window.location.href = "./login.html";
     return;
   }
 
-  // Renderizar lista inicial
-  renderUsers();
+  // Mensaje de bienvenida actualizado
+  welcome.textContent = `Hola ${userData.name}, administra tus juegos favoritos`;
 
-  // Evento logout
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("currentUser");
-      window.location.href = "./login.html";
+  // Logout
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    window.location.href = "./login.html";
+  });
+
+  // Formulario de añadir juego
+  const gameForm = document.getElementById("gameForm");
+  const gameGrid = document.getElementById("gameGrid");
+
+  function renderGameCards() {
+    gameGrid.innerHTML = "";
+    const games = UserModel.getUserGames(userData.email);
+    games.forEach((g) => {
+      const card = document.createElement("div");
+      card.classList.add("game-card");
+      card.innerHTML = `
+        <h3>${g.title}</h3>
+        <p>Nota: ${g.score}/10</p>
+        <p>${g.message}</p>
+      `;
+      gameGrid.appendChild(card);
     });
   }
 
-  // Evento formulario
-  if (userForm) {
-    userForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+  renderGameCards();
 
-      const name = nameInput.value.trim();
-      const email = emailInput.value.trim();
+  // Añadir juego
+  gameForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = document.getElementById("gameName").value.trim();
+    const score = parseInt(document.getElementById("gameRating").value);
+    const message = document.getElementById("gameComment").value.trim();
 
-      // VALIDACIÓN
-      if (name === "" || email === "") {
-        alert("Por favor, completa todos los campos.");
-        return;
-      }
-
-      if (!email.includes("@") || !email.includes(".")) {
-        alert("Introduce un correo electrónico válido.");
-        return;
-      }
-
-      // CREAR OBJETO USUARIO Y GUARDARLO
-      const newUser = { name, email };
-      UserModel.addUser(newUser); // Método para añadir usuario al modelo
-
-      // ACTUALIZAR LISTA
-      renderUsers();
-      userForm.reset();
-    });
-  }
-
-  // Función para renderizar usuarios
-  function renderUsers() {
-    if (userList) {
-      userList.innerHTML = "";
-      const allUsers = UserModel.getAll();
-      allUsers.forEach((u) => {
-        const li = document.createElement("li");
-        li.textContent = `${u.name} (${u.email})`;
-        userList.appendChild(li);
-      });
+    if (!title || isNaN(score) || score < 1 || score > 10) {
+      alert("Introduce un título y nota válida (1-10).");
+      return;
     }
-  }
+
+    UserModel.addGameToUser(userData.email, { title, score, message });
+    renderGameCards();
+    gameForm.reset();
+  });
 }
 
 export { initHome };
