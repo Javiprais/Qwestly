@@ -1,51 +1,69 @@
 <?php
-// 1. Incluye la conexión a la base de datos
+// submit_game.php
 require_once 'db_connect.php';
 
-// Establece la cabecera para indicar que la respuesta será JSON
 header('Content-Type: application/json');
 
-// 2. Comprueba si la solicitud es POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Método no permitido
+    http_response_code(405);
     echo json_encode(['success' => false, 'message' => 'Método no permitido.']);
     exit;
 }
 
-// 3. Obtén los datos JSON enviados desde JavaScript
-// Esto es necesario para solicitudes AJAX enviadas con JSON
-$json_data = file_get_contents('php://input');
-$data = json_decode($json_data, true);
+$data = json_decode(file_get_contents('php://input'), true);
 
-// 4. Valida y sanitiza los datos (EJEMPLO SIMPLE)
-$game_name = $data['name'] ?? null;
+$game_name = trim($data['name'] ?? null);
 $game_rating = $data['rating'] ?? null;
-$game_comment = $data['comment'] ?? null;
+$game_comment = trim($data['comment'] ?? null);
 
-if (empty($game_name) || !is_numeric($game_rating) || $game_rating < 1 || $game_rating > 10 || empty($game_comment)) {
-    http_response_code(400); // Solicitud incorrecta
-    echo json_encode(['success' => false, 'message' => 'Datos inválidos o faltantes.']);
+// VALIDACIÓN
+$errors = [];
+
+// Validar Nombre
+if (empty($game_name)) {
+    $errors['name'] = 'El nombre del juego no puede estar vacío.';
+} elseif (strlen($game_name) > 255) {
+    $errors['name'] = 'El nombre es demasiado largo.';
+}
+
+// Validar Rating
+if (!is_numeric($game_rating)) {
+    $errors['rating'] = 'La calificación debe ser un número.';
+} else {
+    $rating = (int)$game_rating;
+    if ($rating < 1 || $rating > 10) {
+        $errors['rating'] = 'La calificación debe estar entre 1 y 10.';
+    }
+}
+
+// Validar Comentario
+if (!empty($game_comment) && strlen($game_comment) > 500) {
+    $errors['comment'] = 'El comentario es demasiado largo (máximo 500 caracteres).';
+}
+
+// Si hay errores, devolver 400 Bad Request
+if (!empty($errors)) {
+    http_response_code(400);
+    // Devolvemos el array de errores, esto es crucial para JavaScript
+    echo json_encode(['success' => false, 'message' => 'Errores de validación.', 'errors' => $errors]);
     exit;
 }
 
 try {
-    // 5. Prepara la consulta SQL usando sentencias preparadas (¡SEGURIDAD!)
     $sql = "INSERT INTO games (name, rating, comment) VALUES (:name, :rating, :comment)";
     $stmt = $pdo->prepare($sql);
 
-    // 6. Ejecuta la consulta vinculando los parámetros
+    // Los datos ya están limpios y validados, listos para la inserción
     $stmt->execute([
         ':name' => $game_name,
-        ':rating' => (int)$game_rating, // Aseguramos que es un entero
+        ':rating' => $rating,
         ':comment' => $game_comment
     ]);
 
-    // 7. Envía una respuesta de éxito
-    http_response_code(201); // Creado
+    http_response_code(201);
     echo json_encode(['success' => true, 'message' => 'Juego guardado con éxito!', 'id' => $pdo->lastInsertId()]);
 } catch (\PDOException $e) {
-    // 8. Manejo de errores de base de datos
-    http_response_code(500); // Error interno del servidor
-    error_log("Error de base de datos: " . $e->getMessage()); // Para logs
+    http_response_code(500);
+    error_log("Error de base de datos: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'Error al guardar el juego.']);
 }

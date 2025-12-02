@@ -44,44 +44,7 @@ function fetchAndRenderGames() {
         });
 }
 
-// Función para enviar datos al servidor (usa API/MySQL POST)
-function submitGameData(gameName, gameRating, gameComment) {
-    // Usa ruta relativa o base URL, no el localhost explícito si puedes
-    const apiEndpoint = '../../api/submit_game.php';
 
-    const dataToSend = {
-        name: gameName,
-        rating: gameRating,
-        comment: gameComment
-    };
-
-    fetch(apiEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(dataToSend)
-    })
-        .then(response => {
-            if (!response.ok) throw new Error('Error de red o del servidor: ' + response.statusText);
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                console.log("Éxito:", data.message);
-
-                // Recarga la lista después del éxito
-                fetchAndRenderGames();
-
-                // Limpia el formulario
-                document.getElementById('gameForm').reset();
-
-            } else {
-                console.error("Error del servidor:", data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Hubo un problema con la solicitud fetch:', error);
-        });
-}
 
 // Función de Inicialización Principal
 function initHome() {
@@ -89,6 +52,100 @@ function initHome() {
     const welcome = document.getElementById("welcome");
     const logoutBtn = document.getElementById("logoutBtn");
     const gameForm = document.getElementById("gameForm");
+
+    // --- 1. DEFINICIONES DE VALIDACIÓN (AÑADIDAS AQUÍ) ---
+    // Esto garantiza que todas las funciones anidadas las puedan usar.
+    function showError(input, message) {
+        input.classList.add("error");
+        let msg = input.parentElement.querySelector(".error-message");
+        if (!msg) {
+            msg = document.createElement("p");
+            msg.classList.add("error-message");
+            input.parentElement.appendChild(msg);
+        }
+        msg.textContent = message;
+    }
+
+    function clearError(input) {
+        input.classList.remove("error");
+        const msg = input.parentElement.querySelector(".error-message");
+        if (msg) msg.remove();
+    }
+    // ---------------------------------------------------
+
+    // --- 2. submitGameData ANIDADA ---
+    function submitGameData(gameName, gameRating, gameComment) {
+        const apiEndpoint = '../../api/submit_game.php';
+        const dataToSend = { name: gameName, rating: gameRating, comment: gameComment };
+
+        fetch(apiEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dataToSend)
+        })
+            .then(async response => {
+                // Siempre intentamos leer el JSON, incluso si es un error 400
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Si es un error (400), lanzamos el objeto JSON completo (data)
+                    throw data;
+                }
+                return data;
+            })
+            .then(data => {
+                // Éxito (201)
+                console.log("Éxito:", data.message);
+                fetchAndRenderGames();
+                gameForm.reset();
+                // Limpia cualquier error visual persistente
+                clearError(document.getElementById('gameName'));
+                clearError(document.getElementById('gameRating'));
+                clearError(document.getElementById('gameComment'));
+            })
+            .catch(errorData => {
+                console.error('Detalles del error (400):', errorData);
+
+                // Limpiar errores previos antes de mostrar los nuevos
+                clearError(document.getElementById('gameName'));
+                clearError(document.getElementById('gameRating'));
+                clearError(document.getElementById('gameComment'));
+
+                // Comprobar si el error es de validación (contiene la clave 'errors')
+                if (errorData.errors) {
+
+                    if (errorData.errors.name) {
+                        showError(document.getElementById('gameName'), errorData.errors.name);
+                    }
+                    if (errorData.errors.rating) {
+                        showError(document.getElementById('gameRating'), errorData.errors.rating);
+                    }
+                    if (errorData.errors.comment) {
+                        showError(document.getElementById('gameComment'), errorData.errors.comment);
+                    }
+
+                } else {
+                    // Error de conexión o 500
+                    alert(`Fallo en el envío: ${errorData.message || 'Error de conexión.'}`);
+                }
+            });
+    } // Fin de submitGameData
+
+    // 3. Listener del Formulario (Ahora llama a submitGameData anidada)
+    if (gameForm) {
+        gameForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Opcional: AÑADIR VALIDACIÓN FRNTEND AQUÍ (RÁPIDA)
+            // ... (si el rating es > 10, muestra error con showError, etc.) ...
+
+            const nameInput = document.getElementById('gameName').value;
+            const ratingInput = document.getElementById('gameRating').value;
+            const commentInput = document.getElementById('gameComment').value;
+
+            submitGameData(nameInput, ratingInput, commentInput);
+        });
+    }
 
     // 1. **VERIFICACIÓN DE SESIÓN**
     if (!userData) {
@@ -106,20 +163,6 @@ function initHome() {
         window.location.href = "./login.html";
     });
 
-    // Listener del Formulario de añadir juego
-    if (gameForm) {
-        gameForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const nameInput = document.getElementById('gameName').value;
-            const ratingInput = document.getElementById('gameRating').value;
-            const commentInput = document.getElementById('gameComment').value;
-
-            submitGameData(nameInput, ratingInput, commentInput);
-        });
-    }
-
-    // 3. **CARGA INICIAL DE DATOS**
     // Llamamos a la función directamente para cargar los juegos al iniciar la vista
     fetchAndRenderGames();
 }
