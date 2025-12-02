@@ -1,12 +1,17 @@
 // home-controller.js
 import { UserModel } from "../models/user-model.js";
 
-// Función para obtener y renderizar juegos (usa API/MySQL)
+
 function fetchAndRenderGames() {
-    // Asegúrate de que este ID/variable coincide con tu HTML
+    const userData = JSON.parse(localStorage.getItem("currentUser"));
+    if (!userData || !userData.id) {
+        return;
+    }
+
+    const userId = userData.id;
+    const apiEndpoint = `../../api/fetch_games.php?user_id=${userId}`;
+
     const gameGrid = document.getElementById('gameGrid');
-    // Usa ruta relativa o base URL, no el localhost explícito si puedes
-    const apiEndpoint = '../../api/fetch_games.php';
 
     if (!gameGrid) return console.error("Contenedor 'gameGrid' no encontrado.");
     gameGrid.innerHTML = '<p>Cargando juegos...</p>';
@@ -44,17 +49,24 @@ function fetchAndRenderGames() {
         });
 }
 
-
-
 // Función de Inicialización Principal
 function initHome() {
+
     const userData = JSON.parse(localStorage.getItem("currentUser"));
     const welcome = document.getElementById("welcome");
+
+
+    if (!userData) {
+        window.location.href = "./login.html";
+        return;
+    }
+
+    welcome.textContent = `Hola ${userData.name}, administra tus juegos favoritos`;
+
     const logoutBtn = document.getElementById("logoutBtn");
     const gameForm = document.getElementById("gameForm");
 
-    // --- 1. DEFINICIONES DE VALIDACIÓN (AÑADIDAS AQUÍ) ---
-    // Esto garantiza que todas las funciones anidadas las puedan usar.
+
     function showError(input, message) {
         input.classList.add("error");
         let msg = input.parentElement.querySelector(".error-message");
@@ -71,12 +83,10 @@ function initHome() {
         const msg = input.parentElement.querySelector(".error-message");
         if (msg) msg.remove();
     }
-    // ---------------------------------------------------
 
-    // --- 2. submitGameData ANIDADA ---
-    function submitGameData(gameName, gameRating, gameComment) {
+    function submitGameData(gameName, gameRating, gameComment, userId) {
         const apiEndpoint = '../../api/submit_game.php';
-        const dataToSend = { name: gameName, rating: gameRating, comment: gameComment };
+        const dataToSend = { name: gameName, rating: gameRating, comment: gameComment, user_id: userId };
 
         fetch(apiEndpoint, {
             method: 'POST',
@@ -129,33 +139,20 @@ function initHome() {
                     alert(`Fallo en el envío: ${errorData.message || 'Error de conexión.'}`);
                 }
             });
-    } // Fin de submitGameData
+    }
 
-    // 3. Listener del Formulario (Ahora llama a submitGameData anidada)
     if (gameForm) {
         gameForm.addEventListener('submit', function (event) {
             event.preventDefault();
-
-            // Opcional: AÑADIR VALIDACIÓN FRNTEND AQUÍ (RÁPIDA)
-            // ... (si el rating es > 10, muestra error con showError, etc.) ...
 
             const nameInput = document.getElementById('gameName').value;
             const ratingInput = document.getElementById('gameRating').value;
             const commentInput = document.getElementById('gameComment').value;
 
-            submitGameData(nameInput, ratingInput, commentInput);
+            const userData = JSON.parse(localStorage.getItem("currentUser"));
+            submitGameData(nameInput, ratingInput, commentInput, userData.id);
         });
     }
-
-    // 1. **VERIFICACIÓN DE SESIÓN**
-    if (!userData) {
-        window.location.href = "./login.html";
-        return;
-    }
-
-    welcome.textContent = `Hola ${userData.name}, administra tus juegos favoritos`;
-
-    // 2. **EVENTOS Y LÓGICA**
 
     // Logout
     logoutBtn.addEventListener("click", () => {

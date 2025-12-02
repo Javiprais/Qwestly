@@ -1,5 +1,4 @@
 // login-controller.js
-// Se elimina: import { UserModel } from "../models/user-model.js"; // ¡Ya no se usa!
 
 function initLogin() {
     const apiEndpoint = '../../api/login.php'; // Ruta a tu script PHP de login
@@ -10,7 +9,7 @@ function initLogin() {
     const emailInput = form.querySelector('#email');
     const passwordInput = form.querySelector('#password');
 
-    // funciones para mostrar/limpiar error (SE MANTIENEN)
+    // funciones para mostrar/limpiar error
     function showError(input, message) {
         input.classList.add("error");
         let msg = input.parentElement.querySelector(".error-message");
@@ -28,9 +27,6 @@ function initLogin() {
         if (msg) msg.remove();
     }
 
-    // ======================================================
-    // MODIFICACIÓN DEL LISTENER DE SUBMIT
-    // ======================================================
     form.addEventListener("submit", async function (event) { // Añadir 'async'
         event.preventDefault();
 
@@ -58,7 +54,6 @@ function initLogin() {
 
         if (hasErrors) return;
 
-        // 💡 NUEVO CÓDIGO: Enviar credenciales al servidor
         try {
             const response = await fetch(apiEndpoint, {
                 method: 'POST',
@@ -84,8 +79,6 @@ function initLogin() {
             alert('Error de conexión con el servidor. Inténtalo más tarde.');
         }
 
-        // ❌ CÓDIGO ELIMINADO:
-        // Comprobación de usuario existente y login OK con UserModel y localStorage.
     });
 }
 

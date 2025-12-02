@@ -15,9 +15,17 @@ $data = json_decode(file_get_contents('php://input'), true);
 $game_name = trim($data['name'] ?? null);
 $game_rating = $data['rating'] ?? null;
 $game_comment = trim($data['comment'] ?? null);
+$user_id = $data['user_id'] ?? null;
 
 // VALIDACIÓN
 $errors = [];
+
+//Validar id
+if (empty($user_id) || !is_numeric($user_id)) {
+    http_response_code(401); // Unauthorized
+    echo json_encode(['success' => false, 'message' => 'Usuario no autenticado.']);
+}
+$user_id = (int)$user_id;
 
 // Validar Nombre
 if (empty($game_name)) {
@@ -50,14 +58,16 @@ if (!empty($errors)) {
 }
 
 try {
-    $sql = "INSERT INTO games (name, rating, comment) VALUES (:name, :rating, :comment)";
+    $sql = "INSERT INTO games (name, rating, comment, user_id) 
+    VALUES (:name, :rating, :comment, :user_id)";
     $stmt = $pdo->prepare($sql);
 
     // Los datos ya están limpios y validados, listos para la inserción
     $stmt->execute([
         ':name' => $game_name,
         ':rating' => $rating,
-        ':comment' => $game_comment
+        ':comment' => $game_comment,
+        ':user_id' => $user_id
     ]);
 
     http_response_code(201);
