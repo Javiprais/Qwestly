@@ -26,6 +26,7 @@ Incluye vistas para registro, inicio de sesión y navegación principal.
 - HTML5
 - CSS3
 - JavaScript
+- PHP
 
 ## Autores
 
