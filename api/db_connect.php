@@ -1,12 +1,11 @@
 <?php
 // Configuración de la Base de Datos
-$host = 'localhost'; // Tu host de MySQL, generalmente localhost con XAMPP
-$db   = 'qwestly_db'; // Reemplaza con el nombre real de tu base de datos
-$user = 'root';   // El usuario de MySQL, generalmente 'root' con XAMPP
-$pass = '';   // La contraseña de MySQL, generalmente vacía con XAMPP
+$host = 'localhost'; 
+$db   = 'qwestly_db'; 
+$user = 'root';   
+$pass = '';   
 $charset = 'utf8mb4';
 
-// Data Source Name (DSN)
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
 $options = [

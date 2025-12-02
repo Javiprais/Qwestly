@@ -14,18 +14,15 @@ $name = $data['name'] ?? null;
 $email = $data['email'] ?? null;
 $password = $data['password'] ?? null;
 
-// 1. Validación básica
 if (empty($name) || empty($email) || empty($password) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Datos de registro incompletos o inválidos.']);
     exit;
 }
 
-// 2. Seguridad: Hashear la contraseña
 $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
 try {
-    // 3. Comprobar si el correo ya existe
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
     $stmt->execute([$email]);
     if ($stmt->fetchColumn() > 0) {
@@ -34,7 +31,6 @@ try {
         exit;
     }
 
-    // 4. Insertar nuevo usuario
     $sql = "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$name, $email, $password_hash]);

@@ -3,6 +3,7 @@ import { UserModel } from "../models/user-model.js";
 
 
 function fetchAndRenderGames() {
+
     const userData = JSON.parse(localStorage.getItem("currentUser"));
     if (!userData || !userData.id) {
         return;
@@ -10,7 +11,7 @@ function fetchAndRenderGames() {
 
     const userId = userData.id;
     const apiEndpoint = `../../api/fetch_games.php?user_id=${userId}`;
-
+    
     const gameGrid = document.getElementById('gameGrid');
 
     if (!gameGrid) return console.error("Contenedor 'gameGrid' no encontrado.");
@@ -45,7 +46,7 @@ function fetchAndRenderGames() {
         })
         .catch(error => {
             console.error('Hubo un problema al cargar los juegos:', error);
-            gameGrid.innerHTML = '<p class="error">❌ Error al cargar la lista de juegos.</p>';
+            gameGrid.innerHTML = '<p class="error">Error al cargar la lista de juegos.</p>';
         });
 }
 

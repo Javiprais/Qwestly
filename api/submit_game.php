@@ -15,7 +15,8 @@ $data = json_decode(file_get_contents('php://input'), true);
 $game_name = trim($data['name'] ?? null);
 $game_rating = $data['rating'] ?? null;
 $game_comment = trim($data['comment'] ?? null);
-$user_id = $data['user_id'] ?? null;
+$user_id = (int)$data['user_id'] ?? 0;
+$image_file = $data['gameImage'] ?? null;
 
 // VALIDACIÓN
 $errors = [];

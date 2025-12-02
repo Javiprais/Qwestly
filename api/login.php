@@ -20,13 +20,11 @@ if (empty($email) || empty($password)) {
 }
 
 try {
-    // 1. Buscar usuario por email
     $stmt = $pdo->prepare("SELECT id, name, email, password_hash FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password_hash'])) {
-        // 2. Éxito: Contraseña verificada
         
         // ¡IMPORTANTE!: En lugar de guardar credenciales, guardamos la sesión o datos del usuario
         // Aquí simulamos un token simple o devolvemos los datos necesarios para la sesión en JS
@@ -44,7 +42,7 @@ try {
         ]);
 
     } else {
-        // Fallo: Usuario no encontrado o contraseña incorrecta
+        // Usuario no encontrado o contraseña incorrecta
         http_response_code(401); // Unauthorized
         echo json_encode(['success' => false, 'message' => 'Email o contraseña incorrectos.']);
     }

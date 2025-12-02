@@ -47,9 +47,6 @@ function initRegister() {
         if (msg) msg.remove();
     }
 
-    // ======================================================
-    // MODIFICACIÓN DEL LISTENER DE SUBMIT
-    // ======================================================
     form.addEventListener("submit", async function (event) { // Añadir 'async'
         event.preventDefault();
 
@@ -115,8 +112,6 @@ function initRegister() {
             alert('Error de conexión con el servidor. Inténtalo más tarde.');
         }
         
-        // ❌ CÓDIGO ELIMINADO:
-        // UserModel.findByEmail(email) y el código de guardar en localStorage.
     });
 }
 
