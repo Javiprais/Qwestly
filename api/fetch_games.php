@@ -27,12 +27,35 @@ try {
 
     $stmt->execute([':user_id' => $user_id]);
 
-    $games = $stmt->fetchAll();
+    $games = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $totalGames = count($games);
+    $avgRating = 0;
+    $maxRating = 0;
+    $sumRatings = 0;
+
+    if ($totalGames > 0) {
+        foreach ($games as $game) {
+            $currentRating = (int)$game['rating'];
+            $sumRatings += $currentRating;
+            if ($currentRating > $maxRating) {
+                $maxRating = $currentRating;
+            }
+        }
+        $avgRating = round($sumRatings / $totalGames, 1);
+    }
+
+    $summary = [
+        'total' => $totalGames,
+        'average' => $avgRating > 0 ? number_format($avgRating, 1) : 'N/A',
+        'max' => $maxRating > 0 ? $maxRating : 'N/A'
+    ];
 
     http_response_code(200); // OK
     echo json_encode([
         'success' => true,
-        'data' => $games
+        'data' => $games,
+        'summary' => $summary
     ]);
 } catch (\PDOException $e) {
 

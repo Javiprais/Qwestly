@@ -13,37 +13,49 @@
 <body>
   <main class="container">
 
-    <!-- Header con mensaje y logout -->
     <header class="home-header">
       <h1 id="welcome">Tus juegos favoritos</h1>
       <button id="logoutBtn" class="btn btn--secondary">Cerrar sesión</button>
     </header>
 
-    <!-- Sección Mis juegos -->
     <section id="gamesSection">
+      <div id="summaryPanel" class="summary-panel">
+        <div class="summary-card">
+          <h3>Total de Juegos</h3>
+          <p id="totalGames">0</p>
+        </div>
+        <div class="summary-card">
+          <h3>Nota Media</h3>
+          <p id="avgRating">N/A</p>
+        </div>
+        <div class="summary-card">
+          <h3>Mejor Puntuación</h3>
+          <p id="maxRating">N/A</p>
+        </div>
+      </div>
       <h2>Mis juegos</h2>
+      <div id="gamesSection-content-wrapper">
+        <form id="gameForm">
+          <div class="form__group">
+            <label class="form__label required-field">Videojuego</label>
+            <input type="text" id="gameName" class="form__input">
+          </div>
 
-      <!-- Formulario de añadir juego -->
-      <form id="gameForm">
-        <div class="form__group">
-          <label class="form__label">Videojuego</label>
-          <input type="text" id="gameName" class="form__input">
-        </div>
+          <div class="form__group">
+            <label class="form__label required-field">Nota (1–10)</label>
+            <input type="number" id="gameRating" class="form__input">
+          </div>
 
-        <div class="form__group">
-          <label class="form__label">Nota (1–10)</label>
-          <input type="number" id="gameRating" class="form__input">
-        </div>
+          <div class="form__group">
+            <label class="form__label">Comentario</label>
+            <input type="text" id="gameComment" class="form__input">
+          </div>
 
-        <div class="form__group">
-          <label class="form__label">Comentario</label>
-          <input type="text" id="gameComment" class="form__input">
-        </div>
+          <button class="btn" type="submit">Añadir juego</button>
+        </form>
 
-        <button class="btn" type="submit">Añadir juego</button>
-      </form>
-      <!-- Grid de juegos -->
-      <div id="gameGrid" class="game-grid"></div>
+        <div id="gameGrid" class="game-grid"></div>
+      </div>
     </section>
 
   </main>

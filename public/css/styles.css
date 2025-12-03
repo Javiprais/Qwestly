@@ -1,4 +1,3 @@
-/* ===== Variables globales ===== */
 :root {
   --primary: #5c63f2;
   --secondary: #b86be4;
@@ -10,7 +9,6 @@
   --font-family: 'Segoe UI', sans-serif;
 }
 
-/* ===== Reset y general ===== */
 * {
   margin: 0;
   padding: 0;
@@ -32,7 +30,6 @@ body {
   line-height: 1.5;
 }
 
-/* ===== Contenedor principal ===== */
 .container {
   width: 90%;
   max-width: var(--max-width);
@@ -52,7 +49,6 @@ main.container {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* ===== Títulos ===== */
 main h1 {
   font-size: 2.5rem;
   font-weight: 700;
@@ -70,7 +66,6 @@ main h2 {
   padding-bottom: 0.5rem;
 }
 
-/* ===== Botones ===== */
 .btn {
   display: inline-block;
   padding: 0.8rem 1.5rem;
@@ -100,7 +95,6 @@ main h2 {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Logout específico */
 #logoutBtn.btn--secondary {
   width: fit-content;
   border-color: #ff6b6b;
@@ -113,14 +107,12 @@ main h2 {
   color: #ff4c4c;
 }
 
-/* Contenedor de logout */
 #logoutBtn-container {
   display: flex;
   justify-content: center;
   margin-bottom: 1.5rem;
 }
 
-/* ===== Secciones (mensajes, listas, usuarios) ===== */
 .welcome-section {
   background-color: #2b2b5a;
   padding: 1.5rem;
@@ -146,7 +138,6 @@ section li {
   color: var(--text);
 }
 
-/* Sección de acciones (botones agrupados) */
 .actions {
   display: flex;
   justify-content: center;
@@ -158,7 +149,6 @@ section li {
   border-radius: 0;
 }
 
-/* ===== Formularios ===== */
 .form {
   background: #1a1a2e;
   padding: 1rem;
@@ -185,7 +175,6 @@ section li {
   color: #000;
 }
 
-/* ===== Header ===== */
 .header {
   background-color: var(--bg);
   display: flex;
@@ -194,7 +183,6 @@ section li {
   padding: 15px 40px;
 }
 
-/* Logo en header */
 .logo {
   display: flex;
   align-items: center;
@@ -203,7 +191,6 @@ section li {
   gap: 0.5rem;
 }
 
-/* Ajuste del ícono dentro del logo */
 .logo-icon {
   width: 32px;
   height: 32px;
@@ -214,12 +201,10 @@ section li {
   margin-right: 8px;
 }
 
-/* Por defecto, ocultamos los botones de auth */
 .auth-buttons {
   display: none;
 }
 
-/* Si el body tiene la clase landing, se muestran */
 body.landing .auth-buttons {
   display: flex;
   align-items: center;
@@ -233,7 +218,6 @@ body.landing .auth-buttons {
   font-weight: 600;
 }
 
-/* ===== Footer ===== */
 .footer {
   background-color: var(--bg);
   padding: 20px 40px;
@@ -263,7 +247,6 @@ body.landing .auth-buttons {
   color: #fff;
 }
 
-/* ===== Grid básico ===== */
 @media (min-width: 768px) {
   .grid-2 {
     display: grid;
@@ -272,7 +255,6 @@ body.landing .auth-buttons {
   }
 }
 
-/* ===== Responsive ===== */
 @media (max-width: 600px) {
   main.container {
     width: 95%;
@@ -294,7 +276,6 @@ body.landing .auth-buttons {
   }
 }
 
-/* ===== Hero Section ===== */
 .hero-text h1 {
   font-size: 3rem;
   color: var(--accent);
@@ -328,7 +309,6 @@ body.landing .auth-buttons {
   }
 }
 
-/* Wrapper para centrar verticalmente el formulario */
 .register-wrapper {
   display: flex;
   justify-content: center;
@@ -337,7 +317,6 @@ body.landing .auth-buttons {
   min-height: calc(100vh - 60px);
 }
 
-/* Contenedor del formulario (ligero aumento de ancho y padding) */
 .form-container {
   max-width: 480px;
   width: 100%;
@@ -347,7 +326,6 @@ body.landing .auth-buttons {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Encabezado del formulario con icono */
 .form-header {
   display: flex;
   flex-direction: column;
@@ -368,7 +346,6 @@ body.landing .auth-buttons {
   margin-top: 0.35rem;
 }
 
-/* Inputs con efecto focus */
 .form__input:focus {
   outline: none;
   border-color: var(--accent);
@@ -376,7 +353,6 @@ body.landing .auth-buttons {
   transition: all 0.3s ease;
 }
 
-/* Botones centrados y con gap */
 .actions {
   display: flex;
   justify-content: space-between;
@@ -384,7 +360,6 @@ body.landing .auth-buttons {
   margin-top: 1rem;
 }
 
-/* Responsive */
 @media (max-width: 500px) {
   .form-container {
     padding: 1.5rem;
@@ -399,30 +374,32 @@ body.landing .auth-buttons {
   }
 }
 
-/* Asterisco rojo para inputs requeridos */
 .form__label {
   position: relative;
 }
 
-.form__input:required+.form__label::after,
-.form__label::after {
+.required-field::after {
+    content: "*";
+    color: #ff4c4c;
+    margin-left: 0.25rem;
+    position: static; 
+}
+
+.form__input:required+.form__label::after {
   content: "*";
   color: #ff4c4c;
   margin-left: 0.25rem;
 }
 
-/* Mejor manera usando atributo required */
-.form__group .form__label::after {
+/*.form__group .form__label::after {
   content: "*";
   color: #ff4c4c;
   margin-left: 0.25rem;
-}
+}*/
 
 .form__group .form__input:required+.form__label::after {
   content: "*";
 }
-
-/* ===== Validación personalizada ===== */
 
 .form__input.error {
   border-color: #ff4c4c;
@@ -435,8 +412,6 @@ body.landing .auth-buttons {
   margin-top: 4px;
 }
 
-/* === Mostrar/ocultar contraseña === */
-
 .password-wrapper {
   position: relative;
   display: flex;
@@ -445,7 +420,6 @@ body.landing .auth-buttons {
 
 .password-wrapper .form__input {
   padding-right: 2.2rem;
-  /* espacio para icono */
 }
 
 .toggle-password {
@@ -462,17 +436,36 @@ body.landing .auth-buttons {
   color: var(--accent);
 }
 
-/* Header home */
 .home-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(92, 99, 242, 0.2);
 }
 
 .home-header h1 {
   font-size: 2rem;
   color: var(--accent);
+  margin: 0;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  .home-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .home-header h1 {
+    text-align: center;
+  }
+
+  #logoutBtn {
+    width: 100%;
+  }
 }
 
 #logoutBtn {
@@ -480,45 +473,124 @@ body.landing .auth-buttons {
   font-size: 0.9rem;
 }
 
-/* Grid de juegos 3 columnas */
 .game-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  /* 3 juegos por fila */
   gap: 1rem;
-  margin-top: 1rem;
-}
-
-.game-card {
-  background-color: rgba(40, 40, 70, 0.9);
-  padding: 1rem;
-  border-radius: var(--radius);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  color: #fff;
-  width: 100%;
-  box-sizing: border-box;
+  /*margin-top: 1rem;*/
 }
 
 @media (max-width: 900px) {
   .game-grid {
     grid-template-columns: repeat(2, 1fr);
-    /* 2 por fila en pantallas medianas */
   }
 }
 
 @media (max-width: 600px) {
   .game-grid {
     grid-template-columns: 1fr;
-    /* 1 por fila en móviles */
   }
 }
 
+.game-card {
+  background-color: rgba(40, 40, 70, 0.9);
+  padding: 1.2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  line-height: 1.4;
+  border-left: 5px solid var(--primary);
+}
+
+.game-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+}
 
 .game-card h3 {
-  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
   color: var(--accent);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
 }
 
 .game-card p {
-  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+}
+
+.game-card p strong {
+  color: var(--primary);
+  margin-right: 0.5rem;
+}
+
+#gamesSection {
+  padding-top: 1rem;
+}
+
+#gamesSection-content-wrapper {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+  grid-template-columns: 1fr;
+}
+
+#gameForm {
+  background: rgba(40, 40, 70, 0.5);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(92, 99, 242, 0.3);
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+#gameForm .btn[type="submit"] {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 800px) {
+  #gamesSection-content-wrapper {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.summary-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: rgba(30, 30, 50, 0.7);
+  border-radius: var(--radius);
+  border: 1px solid rgba(92, 99, 242, 0.3);
+}
+
+.summary-card {
+  text-align: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius);
+}
+
+.summary-card h3 {
+  font-size: 1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.summary-card p {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent);
 }

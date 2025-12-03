@@ -1,6 +1,21 @@
 // home-controller.js
 import { UserModel } from "../models/user-model.js";
 
+function updateSummaryPanel(summary) {
+    // Usamos 'N/A' como valor por defecto si no hay datos
+    const total = summary.total || 0;
+    const average = summary.average || 'N/A';
+    const max = summary.max || 'N/A';
+
+    // Si los elementos HTML no existen, la función simplemente termina
+    const totalEl = document.getElementById('totalGames');
+    const avgEl = document.getElementById('avgRating');
+    const maxEl = document.getElementById('maxRating');
+
+    if (totalEl) totalEl.textContent = total;
+    if (avgEl) avgEl.textContent = average;
+    if (maxEl) maxEl.textContent = max;
+}
 
 function fetchAndRenderGames() {
 
@@ -11,7 +26,7 @@ function fetchAndRenderGames() {
 
     const userId = userData.id;
     const apiEndpoint = `../../api/fetch_games.php?user_id=${userId}`;
-    
+
     const gameGrid = document.getElementById('gameGrid');
 
     if (!gameGrid) return console.error("Contenedor 'gameGrid' no encontrado.");
@@ -25,6 +40,13 @@ function fetchAndRenderGames() {
             return response.json();
         })
         .then(result => {
+
+            if (result.summary) {
+                updateSummaryPanel(result.summary);
+            } else {
+                updateSummaryPanel({ total: 0, average: 'N/A', max: 'N/A' });
+            }
+
             gameGrid.innerHTML = ""; // Limpia el mensaje de carga
 
             if (result.success && result.data.length > 0) {
@@ -41,12 +63,13 @@ function fetchAndRenderGames() {
                 });
 
             } else {
-                gameGrid.innerHTML = '<p>Aún no hay juegos subidos a Qwestly.</p>';
+                gameGrid.innerHTML = '<p>Aún no has subido ningún juego.</p>';
             }
         })
         .catch(error => {
             console.error('Hubo un problema al cargar los juegos:', error);
             gameGrid.innerHTML = '<p class="error">Error al cargar la lista de juegos.</p>';
+            updateSummaryPanel({ total: 0, average: 'Error', max: 'Error' });
         });
 }
 
