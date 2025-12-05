@@ -26,8 +26,6 @@ try {
 
     if ($user && password_verify($password, $user['password_hash'])) {
         
-        // ¡IMPORTANTE!: En lugar de guardar credenciales, guardamos la sesión o datos del usuario
-        // Aquí simulamos un token simple o devolvemos los datos necesarios para la sesión en JS
         
         http_response_code(200); 
         echo json_encode([
