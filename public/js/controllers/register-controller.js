@@ -84,7 +84,6 @@ function initRegister() {
 
         if (hasErrors) return;
 
-        // 💡 NUEVO CÓDIGO: Enviar datos al servidor
         try {
             const response = await fetch(apiEndpoint, {
                 method: 'POST',
