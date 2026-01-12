@@ -5,43 +5,44 @@
   <meta charset="UTF-8">
   <title>Qwestly - Login</title>
   <link rel="icon" href="../ico/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../scss/main.css">
   <script type="module" src="../js/main.js"></script>
 </head>
 
 <body>
-  <div class="register-wrapper">
-    <div class="container form-container">
-      <!-- Encabezado del formulario con icono -->
-      <div class="form-header">
-        <img src="../ico/gamepad.svg" alt="Gamepad Icon" class="form-icon">
-        <h1>Inicio de sesión</h1>
-        <p>Ingresa tus datos para acceder a tu cuenta y descubrir contenido exclusivo de Qwestly.</p>
+  <div class="main-wrapper" style="max-width: 450px; margin-top: 10vh; min-height: auto;">
+    
+    <div class="form-header">
+      <h1 style="color: #ffe96c; text-align: center;">Inicio de sesión</h1>
+      <p style="text-align: center; color: #ccc; margin-bottom: 1.5rem;">Ingresa tus datos para acceder a tu cuenta.</p>
+    </div>
+
+    <form id="login-form" novalidate class="form">
+      <div class="form__group">
+        <label class="form__label" for="email">Correo electrónico</label>
+        <input class="form__input" type="email" id="email" required placeholder="ejemplo@correo.com">
+        <span class="error-msg"></span>
       </div>
 
-      <!-- Formulario de login -->
-      <form id="login-form" novalidate class="">
-        <div class="form__group">
-          <label class="form__label" for="email">Correo electrónico</label>
-          <input class="form__input" type="email" id="email" required>
+      <div class="form__group">
+        <label class="form__label" for="password">Contraseña</label>
+        <div class="password-wrapper" style="position: relative;">
+            <input class="form__input" type="password" id="password" required placeholder="Tu contraseña">
+            <span class="toggle-password" id="toggle-login-pass" style="position: absolute; right: 10px; top: 10px; cursor: pointer;">👁️</span>
         </div>
-        <div class="form__group">
-          <label class="form__label" for="password">Contraseña</label>
-          <input class="form__input" type="password" id="password" required>
-        </div>
+        <span class="error-msg"></span>
+      </div>
 
-        <div class="actions">
-          <button type="submit" class="btn">Entrar</button>
-          <!-- <button type="button" id="btn-back" class="btn btn--secondary">Volver atrás</button> -->
-        </div>
+      <div class="actions" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+        <button type="submit" class="btn btn--full">Entrar</button>
+      </div>
 
-        <div id="login-message" style="text-align:center; margin-top:1rem;">
-          <p>¿Todavía no estás registrado?
-            <a href="register.html" class="link">Regístrate aquí</a> ✨
-          </p>
-        </div>
-      </form>
-    </div>
+      <div id="login-message" style="text-align:center; margin-top:1rem;">
+        <p style="color: #ccc; font-size: 0.9rem;">¿Todavía no estás registrado?
+          <a href="register.html" style="color: #ffe96c; font-weight: bold; text-decoration: none;">Regístrate aquí</a>
+        </p>
+      </div>
+    </form>
   </div>
 </body>
 

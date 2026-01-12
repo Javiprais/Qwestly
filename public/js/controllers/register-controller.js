@@ -1,117 +1,166 @@
-// register-controller.js
-// Se elimina: import { UserModel } from "../models/user-model.js"; // ¡Ya no se usa!
-
-function initRegister() {
-    const apiEndpoint = '../../api/register.php'; // Ruta a tu script PHP de registro
-
-    const backButton = document.getElementById('btn-back');
-
-    if (backButton) {
-        backButton.addEventListener('click', () => {
-            window.history.back();
-        });
-    }
+// register-controller.js - Conectado a PHP
+export function initRegister() {
+    console.log("Iniciando Register Controller (PHP)...");
 
     const form = document.getElementById("register-form");
+    const backButton = document.getElementById('btn-back');
+    const submitBtn = document.getElementById("submitBtn");
+
+    // Navegación botón atrás
+    if (backButton) {
+        backButton.addEventListener('click', () => window.history.back());
+    }
+
     if (!form) return;
 
+    // Referencias DOM
     const nameInput = form.querySelector("#name");
     const emailInput = form.querySelector("#email");
     const passInput = form.querySelector("#password");
+    const passConfirmInput = form.querySelector("#confirm-password");
     const togglePass = document.getElementById("toggle-register-pass");
 
-    // Mostrar / ocultar contraseña
-    togglePass.addEventListener("click", () => {
-        const type = passInput.type === "password" ? "text" : "password";
-        passInput.type = type;
+    // --- REGEX PATTERNS (Requisito obligatorio) ---
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    const passRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
 
-        // Cambiar icono
-        togglePass.textContent = type === "password" ? "👁️" : "🙈";
-    });
+    // Estados de validación
+    const validationStatus = { name: false, email: false, password: false, confirm: false };
 
-    // Crear funciones de validación visual (SE MANTIENEN)
+    // --- FUNCIONES VISUALES (Helpers) ---
     function showError(input, message) {
         input.classList.add("error");
-        let msg = input.parentElement.querySelector(".error-message");
-        if (!msg) {
-            msg = document.createElement("p");
-            msg.classList.add("error-message");
-            input.parentElement.appendChild(msg);
-        }
-        msg.textContent = message;
+        input.classList.remove("valid");
+        let msg = input.parentElement.querySelector(".error-msg");
+        if (!msg) msg = input.parentElement.parentElement.querySelector(".error-msg");
+        if (msg) msg.textContent = message;
     }
 
-    function clearError(input) {
+    function showValid(input) {
         input.classList.remove("error");
-        const msg = input.parentElement.querySelector(".error-message");
-        if (msg) msg.remove();
+        input.classList.add("valid");
+        let msg = input.parentElement.querySelector(".error-msg");
+        if (!msg) msg = input.parentElement.parentElement.querySelector(".error-msg");
+        if (msg) msg.textContent = "";
     }
 
-    form.addEventListener("submit", async function (event) { // Añadir 'async'
+    function checkForm() {
+        const allValid = Object.values(validationStatus).every(s => s === true);
+        if (submitBtn) submitBtn.disabled = !allValid;
+    }
+
+    // --- EVENTOS DE VALIDACIÓN EN TIEMPO REAL ---
+    
+    // 1. Nombre
+    nameInput.addEventListener("input", () => {
+        if (nameInput.value.trim().length >= 3) {
+            showValid(nameInput);
+            validationStatus.name = true;
+        } else {
+            showError(nameInput, "Mínimo 3 caracteres.");
+            validationStatus.name = false;
+        }
+        checkForm();
+    });
+
+    // 2. Email
+    emailInput.addEventListener("input", () => {
+        if (emailRegex.test(emailInput.value.trim())) {
+            showValid(emailInput);
+            validationStatus.email = true;
+        } else {
+            showError(emailInput, "Formato inválido.");
+            validationStatus.email = false;
+        }
+        checkForm();
+    });
+
+    // 3. Password
+    passInput.addEventListener("input", () => {
+        const val = passInput.value;
+        const reqLen = document.getElementById('req-len');
+        const reqNum = document.getElementById('req-num');
+        const reqCap = document.getElementById('req-cap');
+
+        const setReq = (el, valid) => {
+            el.classList.toggle('valid', valid);
+            el.classList.toggle('invalid', !valid);
+        };
+
+        setReq(reqLen, val.length >= 8);
+        setReq(reqNum, /\d/.test(val));
+        setReq(reqCap, /[A-Z]/.test(val));
+
+        if (passRegex.test(val)) {
+            showValid(passInput);
+            validationStatus.password = true;
+        } else {
+            passInput.classList.add('error');
+            validationStatus.password = false;
+        }
+        
+        if (passConfirmInput.value !== "") passConfirmInput.dispatchEvent(new Event('input'));
+        checkForm();
+    });
+
+    // 4. Confirmar
+    if (passConfirmInput) {
+        passConfirmInput.addEventListener("input", () => {
+            if (passConfirmInput.value === passInput.value && passConfirmInput.value !== "") {
+                showValid(passConfirmInput);
+                validationStatus.confirm = true;
+            } else {
+                showError(passConfirmInput, "Las contraseñas no coinciden.");
+                validationStatus.confirm = false;
+            }
+            checkForm();
+        });
+    }
+
+    // Toggle Pass
+    if(togglePass) {
+        togglePass.addEventListener("click", () => {
+            const type = passInput.type === "password" ? "text" : "password";
+            passInput.type = type;
+            togglePass.textContent = type === "password" ? "👁️" : "🙈";
+        });
+    }
+
+    // --- ENVÍO AL BACKEND (PHP) ---
+    form.addEventListener("submit", async function (event) {
         event.preventDefault();
+        if (submitBtn.disabled) return;
 
-        // Limpiar errores previos
-        clearError(nameInput);
-        clearError(emailInput);
-        clearError(passInput);
-
-        let hasErrors = false;
-
-        const name = nameInput.value.trim();
-        const email = emailInput.value.trim();
-        const password = passInput.value.trim();
-
-        // Validación nombre
-        if (name === "") {
-            showError(nameInput, "El nombre es obligatorio.");
-            hasErrors = true;
-        }
-
-        // Validación email
-        if (email === "") {
-            showError(emailInput, "El correo es obligatorio.");
-            hasErrors = true;
-        } else if (!email.includes("@")) {
-            showError(emailInput, "Introduce un correo válido.");
-            hasErrors = true;
-        }
-
-        // Validación contraseña
-        if (password === "") {
-            showError(passInput, "La contraseña es obligatoria.");
-            hasErrors = true;
-        }
-
-        if (hasErrors) return;
+        const userData = {
+            name: nameInput.value.trim(),
+            email: emailInput.value.trim(),
+            password: passInput.value.trim()
+        };
 
         try {
-            const response = await fetch(apiEndpoint, {
+            // Fetch a tu API
+            const response = await fetch('../../api/register.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password })
+                body: JSON.stringify(userData)
             });
-            
+
             const data = await response.json();
 
-            if (data.success) {
-                // Registro OK: Redirigir al login
-                alert("Registro exitoso. Serás redirigido al login.");
+            if (response.ok && data.success) {
+                alert("¡Registro exitoso! Iniciando sesión...");
                 window.location.href = "./login.html";
-
             } else {
-                // Error de servidor (email ya existe, etc.)
-                if (data.message.includes("email ya está registrado")) {
+                // Si el PHP devuelve error (ej: email duplicado)
+                if (data.message.includes("email")) {
                     showError(emailInput, data.message);
                 } else {
-                    alert("Error en el registro: " + data.message);
+                    alert("Error: " + data.message);
                 }
             }
         } catch (error) {
-            console.error('Error de red durante el registro:', error);
-            alert('Error de conexión con el servidor. Inténtalo más tarde.');
+            console.error(error);
+            alert("Error de conexión con el servidor.");
         }
-        
     });
 }
-
-export { initRegister };

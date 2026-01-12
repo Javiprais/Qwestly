@@ -30,4 +30,4 @@ Incluye vistas para registro, inicio de sesión y navegación principal.
 
 ## Autores
 
-Julio y Javi – Trabajo realizado para la asignatura de Desarrollo Web.
+Javier Cabello Díaz

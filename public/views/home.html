@@ -1,64 +1,93 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Qwestly - Home</title>
-  <link rel="icon" href="../ico/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../css/styles.css">
+  <!--<link rel="stylesheet" href="../css/main.css"> -->
+  <link rel="stylesheet" href="../scss/main.css"> 
   <script type="module" src="../js/main.js"></script>
 </head>
-
 <body>
-  <main class="container">
 
-    <header class="home-header">
-      <h1 id="welcome">Tus juegos favoritos</h1>
+  <header class="main-header">
+    <div class="logo-area">
+      <h1>Qwestly</h1>
+    </div>
+    <div class="user-controls">
+      <button id="themeToggle" class="btn btn--small">Cambiar Tema</button>
       <button id="logoutBtn" class="btn btn--secondary">Cerrar sesión</button>
-    </header>
+    </div>
+  </header>
 
-    <section id="gamesSection">
-      <div id="summaryPanel" class="summary-panel">
-        <div class="summary-card">
-          <h3>Total de Juegos</h3>
+  <div class="main-wrapper">
+    
+    <main class="dashboard-grid">
+      
+      <section class="stats-panel">
+        <div class="stat-card">
+          <h3>Total Juegos</h3>
           <p id="totalGames">0</p>
         </div>
-        <div class="summary-card">
+        <div class="stat-card">
           <h3>Nota Media</h3>
-          <p id="avgRating">N/A</p>
+          <p id="avgRating">-</p>
         </div>
-        <div class="summary-card">
-          <h3>Mejor Puntuación</h3>
-          <p id="maxRating">N/A</p>
+        <div class="stat-card">
+          <h3>Mejor Juego</h3>
+          <p id="maxRating">-</p>
         </div>
+      </section>
+
+      <aside class="control-panel">
+        <div class="panel-box"> <h2>Añadir Juego</h2>
+          <form id="gameForm" class="form">
+            <div class="form__group">
+              <label class="form__label">Título *</label>
+              <input type="text" id="gameName" class="form__input" placeholder="Ej: Elden Ring">
+            </div>
+
+            <div class="form__group">
+              <label class="form__label">Nota (0-10) *</label>
+              <input type="number" id="gameRating" class="form__input" min="0" max="10" step="0.1">
+            </div>
+
+            <div class="form__group">
+              <label class="form__label">Comentario</label>
+              <textarea id="gameComment" class="form__input" rows="3"></textarea>
+            </div>
+
+            <button class="btn btn--full" type="submit">Guardar Juego</button>
+          </form>
+        </div>
+      </aside>
+
+      <section class="games-panel">
+        <div class="panel-header">
+          <h2>Mi Biblioteca</h2>
+          <input type="text" id="searchGame" placeholder="Buscar..." class="search-input">
+        </div>
+        <div id="gameGrid" class="cards-container">
+          </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Título Modal</h3>
+        <button id="closeModal" class="close-btn">&times;</button>
       </div>
-      <h2>Mis juegos</h2>
-      <div id="gamesSection-content-wrapper">
-        <form id="gameForm">
-          <div class="form__group">
-            <label class="form__label required-field">Videojuego</label>
-            <input type="text" id="gameName" class="form__input">
-          </div>
-
-          <div class="form__group">
-            <label class="form__label required-field">Nota (1–10)</label>
-            <input type="number" id="gameRating" class="form__input">
-          </div>
-
-          <div class="form__group">
-            <label class="form__label">Comentario</label>
-            <input type="text" id="gameComment" class="form__input">
-          </div>
-
-          <button class="btn" type="submit">Añadir juego</button>
-        </form>
-
-        <div id="gameGrid" class="game-grid"></div>
+      <div class="modal-body" id="modalBody">
+        <p>Contenido del modal...</p>
       </div>
-    </section>
+      <div class="modal-footer">
+        <button id="confirmAction" class="btn">Aceptar</button>
+      </div>
+    </div>
+  </div>
 
-  </main>
 </body>
-
 </html>

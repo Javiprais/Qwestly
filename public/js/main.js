@@ -2,7 +2,6 @@
 // Punto de entrada principal de la aplicación
 // Carga dinámicamente el controlador correspondiente según la página
 
-
 // Detecta la página actual
 const currentPath = window.location.pathname;
 
