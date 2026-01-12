@@ -1,0 +1,62 @@
+//_variables.scss - Variables SCSS
+
+$color-primary: #5c63f2;
+$color-secondary: #b86be4;
+$color-accent: #ffe96c;
+$color-bg: #0d0d1a;
+$color-bg-panel: #1a1a2e;
+$color-text: #ffffff;
+$color-error: #ff4c4c;
+
+// Tipografía
+$font-family-base: 'Segoe UI', sans-serif;
+$font-size-base: 16px;
+
+// Bordes y Medidas
+$border-radius: 8px;
+$max-width: 1200px;
+
+// Tema Claro (LocalStorage)
+body.light-theme {
+    background-color: #f0f0f0;
+    color: #333;
+    background-image: none;
+
+    .main-wrapper {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #333;
+    }
+
+    .game-card,
+    .stat-card,
+    .form {
+        background-color: #ffffff;
+        color: #333;
+        border: 1px solid #ddd;
+
+        h3 {
+            color: $color-primary;
+        }
+
+        p,
+        label {
+            color: #555;
+        }
+
+        input,
+        textarea {
+            background-color: #f9f9f9;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+    }
+
+    .main-header {
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+
+        h1 {
+            color: $color-primary;
+        }
+    }
+}

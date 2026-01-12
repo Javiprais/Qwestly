@@ -1,0 +1,23 @@
+.main-header {
+  // Color oscuro sólido o semi-transparente para que destaque sobre el fondo
+  background-color: #0d0d1a; 
+  border-bottom: 1px solid rgba(92, 99, 242, 0.3);
+  padding: 1rem 2rem;
+  
+  // Flexbox para separar Logo (izq) y Botones (der)
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin: 0;
+    color: $color-accent; 
+    font-size: 1.5rem;
+  }
+
+  .user-controls {
+    display: flex;
+    gap: 1rem; // Separación entre botones
+    align-items: center;
+  }
+}

@@ -1,0 +1,53 @@
+// Estilo base para cualquier tarjeta (Herencia o mixin simple)
+.stat-card, .game-card {
+  background-color: rgba($color-bg-panel, 0.8);
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  border: 1px solid rgba($color-primary, 0.1);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: $color-primary;
+  }
+}
+
+// Específico de Stats
+.stat-card {
+  text-align: center;
+  h3 { color: $color-secondary; font-size: 0.9rem; margin-bottom: 0.5rem; }
+  p { font-size: 2rem; font-weight: bold; color: $color-text; }
+}
+
+// Específico de Tarjetas de Juego (Nodos dinámicos)
+.game-card {
+  position: relative;
+  
+  h3 { color: $color-accent; margin-bottom: 0.5rem; }
+  .rating { 
+    color: $color-primary; 
+    font-weight: bold; 
+    font-size: 1.2rem;
+  }
+  .comment {
+    font-style: italic;
+    color: darken($color-text, 20%);
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  // Botón de eliminar (aparecerá en hover o siempre)
+  .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: $color-error;
+    cursor: pointer;
+    font-size: 1.2rem;
+    opacity: 0.6;
+    &:hover { opacity: 1; transform: scale(1.1); }
+  }
+}

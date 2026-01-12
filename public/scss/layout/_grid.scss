@@ -1,0 +1,48 @@
+// Contenedor que centra y da fondo al dashboard
+.main-wrapper {
+  max-width: 1200px;
+  margin: 2rem auto; // Centrado horizontal
+  padding: 2rem;
+  
+  // Fondo Oscuro
+  background-color: rgba(13, 13, 26, 0.85); // Fondo muy oscuro casi opaco
+  backdrop-filter: blur(10px); // Difuminado del fondo de atrás
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 320px 1fr; 
+  grid-template-areas: 
+    "stats stats"
+    "form list";
+
+  @include respond-to(tablet) {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "stats"
+      "form"
+      "list";
+  }
+}
+
+// Asignaciones de área
+.stats-panel { grid-area: stats; }
+.control-panel { grid-area: form; }
+.games-panel { grid-area: list; }
+
+// Ajuste para el cuadro del formulario
+.panel-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+// Grid de Stats
+.stats-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}

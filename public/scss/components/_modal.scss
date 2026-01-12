@@ -1,0 +1,46 @@
+.modal-overlay {
+  position: fixed; // Fijo respecto a la ventana
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); // Fondo negro semitransparente
+  z-index: 9999; // Siempre encima de todo
+  
+  // Para centrar el cuadro del modal
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // LÓGICA PARA OCULTAR
+  &.hidden {
+    display: none;
+  }
+}
+
+.modal-content {
+  background-color: $color-bg-panel;
+  padding: 2rem;
+  border-radius: $border-radius;
+  min-width: 300px;
+  max-width: 500px;
+  border: 1px solid $color-primary;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+  text-align: center;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    h3 { color: $color-accent; margin: 0; }
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+}

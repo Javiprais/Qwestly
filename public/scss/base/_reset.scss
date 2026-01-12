@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  background-color: $color-bg;
+  color: $color-text;
+  background-image: url('../img/qwestly-banner_noise2_scale.png'); 
+  background-attachment: fixed;
+  background-size: cover;
+  line-height: 1.5;
+}
